@@ -15,6 +15,9 @@ export default new Vuex.Store({
       const doneTodos = state.todos.filter((todo) => todo.completed);
       return Math.round((doneTodos.length / state.todos.length) * 100);
     },
+    totalTodos: (state) => {
+      return state.todos.length;
+    },
   },
   mutations: {
     set_todos(state, todos) {
@@ -34,10 +37,10 @@ export default new Vuex.Store({
         return state.todos;
       });
     },
-    edit_todo(state, idEdit, newTitle) {
+    edit_todo(state, newTitle) {
       state.todos.map((todo) => {
-        if (todo.id === idEdit) {
-          todo.title = newTitle;
+        if (todo.id === newTitle.id) {
+          todo = newTitle;
         }
       });
     },
@@ -67,10 +70,10 @@ export default new Vuex.Store({
         console.log(error);
       }
     },
-    async editTodo({ commit }, idEdit, newTodo) {
+    async editTodo({ commit }, newTodo) {
       try {
-        await axios.put(`http://localhost:3000/todos/2`, newTodo);
-        commit("edit_todo", idEdit, newTodo);
+        await axios.put(`http://localhost:3000/todos/${newTodo.id}`, newTodo);
+        commit("edit_todo", newTodo);
       } catch (error) {
         console.log(error);
       }

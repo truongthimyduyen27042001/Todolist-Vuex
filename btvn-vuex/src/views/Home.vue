@@ -15,12 +15,7 @@
             <label for="exampleInputEmail1" class="form-label"
               >Enter new title</label
             >
-            <input
-              type="text"
-              class="form-control"
-              id="exampleInputEmail1"
-              aria-describedby="emailHelp"
-            />
+            <input type="text" class="form-control" v-model="titleEdit" />
           </div>
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
@@ -29,7 +24,7 @@
     <!-- end modal -->
     <div class="todo-title">
       <h1>List To Do</h1>
-      <h3>Count: 3</h3>
+      <h3>Count: {{ totalTodos }}</h3>
     </div>
     <div class="todo-list">
       <form @submit="onSubmit">
@@ -54,7 +49,7 @@
           <div class="todo-control">
             <button
               type="button"
-              @click="editTitle()"
+              @click="editTitle(todo.id)"
               class="btn btn-outline-success"
             >
               Edit
@@ -91,7 +86,9 @@ export default {
     return {
       title: "",
       isEditing: false,
+      titleEdit: "",
       editID: "",
+      search: "",
     };
   },
   created() {
@@ -103,6 +100,7 @@ export default {
     },
     ...mapGetters(["doneTodos"]),
     ...mapGetters(["progress"]),
+    ...mapGetters(["totalTodos"]),
   },
   methods: {
     ...mapActions(["getTodos"]),
@@ -123,6 +121,11 @@ export default {
       (this.isEditing = true), (this.editID = id);
     },
     handleEdit() {
+      this.editTodo({
+        id: this.editID,
+        title: this.titleEdit,
+        completed: false,
+      });
       this.isEditing = false;
     },
   },
