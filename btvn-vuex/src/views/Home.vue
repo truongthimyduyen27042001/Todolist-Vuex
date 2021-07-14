@@ -123,7 +123,7 @@ export default {
       (this.isEditing = true), (this.editID = id);
     },
     handleEdit() {
-      this.isEditing = false
+      this.isEditing = false;
     },
   },
 };
